@@ -156,7 +156,9 @@ runLoop App {..} = do
         Async.link a
 
         loop newState newMarkup events sub newModel
-      Exit -> return oldModel
+      Exit -> do
+        runUI $ Gtk.widgetDestroy =<< someStateWidget oldState
+        return oldModel
 
 -- | Assert that the program was linked using the @-threaded@ flag, to
 -- enable the threaded runtime required by this module.
